@@ -8,10 +8,10 @@ jobs:
     strategy:
       matrix:
         include:
-          - crate: ux2-macros
-            path: ux2-macros
-          - crate: ux2
-            path: ux2
+          - crate: ux3-macros
+            path: ux3-macros
+          - crate: ux3
+            path: ux3
     runs-on: ubuntu-latest
     steps:
       - uses: google-github-actions/release-please-action@v3

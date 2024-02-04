@@ -1,15 +1,15 @@
 [package]
-name = "ux2-macros"
-version = "0.10.0"
+name = "ux3-macros"
+version = "0.0.1"
 edition = "2021"
-description = "Macro backend for ux2"
+description = "Macro backend for ux3"
 license = "Apache-2.0"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-quote = "1.0.23"
-proc-macro2 = "1.0.50"
+quote = "1.0.35"
+proc-macro2 = "1.0.78"
 
 [lib]
 proc-macro = true

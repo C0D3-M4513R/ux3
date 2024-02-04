@@ -35,27 +35,27 @@ pub fn criterion_benchmark(c: &mut Criterion) {
     });
 
     #[cfg(feature = "8")]
-    group.bench_with_input(BenchmarkId::new("ux2", 8), &(), |b, _| {
-        let lhs = ux2::i7::try_from(rng.gen_range(0..i8::MAX / 4)).unwrap();
-        let rhs = ux2::i7::try_from(rng.gen_range(0..i8::MAX / 4)).unwrap();
+    group.bench_with_input(BenchmarkId::new("ux3", 8), &(), |b, _| {
+        let lhs = ux3::i7::try_from(rng.gen_range(0..i8::MAX / 4)).unwrap();
+        let rhs = ux3::i7::try_from(rng.gen_range(0..i8::MAX / 4)).unwrap();
         b.iter(|| lhs + rhs)
     });
     #[cfg(feature = "16")]
-    group.bench_with_input(BenchmarkId::new("ux2", 16), &(), |b, _| {
-        let lhs = ux2::i15::from(rng.gen_range(0..i16::MAX / 4)).unwrap();
-        let rhs = ux2::i15::from(rng.gen_range(0..i16::MAX / 4)).unwrap();
+    group.bench_with_input(BenchmarkId::new("ux3", 16), &(), |b, _| {
+        let lhs = ux3::i15::from(rng.gen_range(0..i16::MAX / 4)).unwrap();
+        let rhs = ux3::i15::from(rng.gen_range(0..i16::MAX / 4)).unwrap();
         b.iter(|| lhs + rhs)
     });
     #[cfg(feature = "32")]
-    group.bench_with_input(BenchmarkId::new("ux2", 32), &(), |b, _| {
-        let lhs = ux2::i31::from(rng.gen_range(0..i32::MAX / 4)).unwrap();
-        let rhs = ux2::i31::from(rng.gen_range(0..i32::MAX / 4)).unwrap();
+    group.bench_with_input(BenchmarkId::new("ux3", 32), &(), |b, _| {
+        let lhs = ux3::i31::from(rng.gen_range(0..i32::MAX / 4)).unwrap();
+        let rhs = ux3::i31::from(rng.gen_range(0..i32::MAX / 4)).unwrap();
         b.iter(|| lhs + rhs)
     });
     #[cfg(any(feature = "64"))]
-    group.bench_with_input(BenchmarkId::new("ux2", 64), &(), |b, _| {
-        let lhs = ux2::i63::try_from(rng.gen_range(0..i64::MAX / 4)).unwrap();
-        let rhs = ux2::i63::try_from(rng.gen_range(0..i64::MAX / 4)).unwrap();
+    group.bench_with_input(BenchmarkId::new("ux3", 64), &(), |b, _| {
+        let lhs = ux3::i63::try_from(rng.gen_range(0..i64::MAX / 4)).unwrap();
+        let rhs = ux3::i63::try_from(rng.gen_range(0..i64::MAX / 4)).unwrap();
         b.iter(|| lhs + rhs)
     });
 }

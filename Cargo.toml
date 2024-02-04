@@ -1,2 +1,3 @@
 [workspace]
-members = ["ux2", "ux2-macros"]
+members = ["ux3", "ux3-macros"]
+resolver = "2"

@@ -1,12 +1,12 @@
 [package]
-name = "ux2"
-version = "0.8.6"
+name = "ux3"
+version = "0.0.1"
 edition = "2021"
 description = "Non-standard integer types like `u7`, `u9`, `u10`, `u63`, `i7`, `i9` etc."
 license = "Apache-2.0"
 
-repository = "https://github.com/JonathanWoollett-Light/ux2"
-documentation = "https://docs.rs/ux2/"
+#repository = "https://github.com/JonathanWoollett-Light/ux2"
+#documentation = "https://docs.rs/ux2/"
 readme = "../README.md"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
@@ -18,10 +18,11 @@ default = ["8"]
 16 = ["8"]
 8 = []
 emath_0_25 = ["dep:emath_0_25"]
+nostd = []
 
 [dependencies]
-serde = { version = "1.0.160", features = ["derive"], optional = true }
-ux2-macros =  { path = "../ux2-macros", version = "0.10.0" }
+serde = { version = "1.0.196", features = ["derive"], optional = true }
+ux3-macros =  { path = "../ux3-macros", version = "0.0.1" }
 emath_0_25 = {package = "emath", version = "0.25", optional = true}
 
 [dev-dependencies]

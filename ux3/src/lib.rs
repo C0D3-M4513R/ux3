@@ -1,11 +1,10 @@
 #![cfg_attr(docsrs, feature(doc_auto_cfg))]
 // https://doc.rust-lang.org/rustdoc/unstable-features.html#doc_auto_cfg-automatically-generate-doccfg
 
-//! # uX2: A better [uX](https://github.com/rust-ux/uX)
+//! # uX3: A better [uX](https://github.com/rust-ux/uX)/[ux2](https://github.com/JonathanWoollett-Light/ux2)
 //!
-//! [![Crates.io](https://img.shields.io/crates/v/ux2)](https://crates.io/crates/ux2)
-//! [![docs](https://img.shields.io/crates/v/ux2?color=yellow&label=docs)](https://docs.rs/ux2)
-//! [![codecov](https://codecov.io/gh/JonathanWoollett-Light/ux2/branch/master/graph/badge.svg?token=II1xtnbCDX)](https://codecov.io/gh/JonathanWoollett-Light/ux2)
+//! [![Crates.io](https://img.shields.io/crates/v/ux3)](https://crates.io/crates/ux3)
+//! [![docs](https://img.shields.io/crates/v/ux3?color=yellow&label=docs)](https://docs.rs/ux3)
 //!
 //! #### Non-standard integer types like `u7`, `u9`, `u10`, `u63`, `i7`, `i9` etc.
 //!
@@ -15,20 +14,12 @@
 //! features) that offer safe arithmetic operations.
 //!
 //! `<core::primitive::i32 as core::ops::Add<core::primitive::i32>>::add` can panic in `Debug` or
-//! overflow in `Release`, `<ux2::i32 as core::ops::Add<ux2::i32>>::add` cannot panic or overflow in
-//! `Debug` or `Release`, this is because it returns `ux2::i33`. This is applied for all operations
-//! and combinations of types in `ux2`. This allows for more thorough compile time type checking.
+//! overflow in `Release`, `<ux3::i32 as core::ops::Add<ux3::i32>>::add` cannot panic or overflow in
+//! `Debug` or `Release`, this is because it returns `ux3::i33`. This is applied for all operations
+//! and combinations of types in `ux3`. This allows for more thorough compile time type checking.
 //!
-//! ```ignore
-//! use rand::Rng;
-//! let a = ux2::i4::try_from(3i8).unwrap();
-//! let b = ux2::i8::from(rand::thread_rng().gen::<core::primitive::i8>());
-//! let c: ux2::i9 = a + b;
-//! let d: ux2::i4 = c % a;
-//! let e: core::primitive::i8 = core::primitive::i8::from(d);
-//! ```
 //!
-//! uX2 types take up as much space as the smallest integer type that can contain them.
+//! uX3 types take up only as much space as the smallest integer type that can contain them.
 //!
 //! ## Why does this exist? Why use this over `ux`?
 //!
@@ -62,35 +53,29 @@
 //!
 //! The compile times increase exponentially, 3s, 7s, 30s, 3m and 46m respectively.
 
-#[cfg(feature = "128")]
-ux2_macros::generate_types!(128);
-#[cfg(all(feature = "64", not(feature = "128")))]
-ux2_macros::generate_types!(64);
-#[cfg(all(feature = "32", not(feature = "64")))]
-ux2_macros::generate_types!(32);
-#[cfg(all(feature = "16", not(feature = "32")))]
-ux2_macros::generate_types!(16);
-#[cfg(all(feature = "8", not(feature = "16")))]
-ux2_macros::generate_types!(8);
+ux3_macros::define_enum!(2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12);
+// ux3_macros::define_enum!(12);
 
 /// A mimic of [`std::num::TryFromIntError`] that can be constructed on stable.
 #[derive(Debug, Eq, PartialEq)]
 pub struct TryFromIntError;
-impl std::fmt::Display for TryFromIntError {
+impl core::fmt::Display for TryFromIntError {
     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
         write!(f, "Failed `TryFrom`.")
     }
 }
+#[cfg(not(feature = "nostd"))]
 impl std::error::Error for TryFromIntError {}
 
 /// A mimic of [`std::num::ParseIntError`] that can be constructed on stable.
 #[derive(Debug, Eq, PartialEq)]
 pub struct ParseIntError;
-impl std::fmt::Display for ParseIntError {
+impl core::fmt::Display for ParseIntError {
     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
         write!(f, "Failed `TryFrom`.")
     }
 }
+#[cfg(not(feature = "nostd"))]
 impl std::error::Error for ParseIntError {}
 
 /// https://doc.rust-lang.org/std/primitive.array.html#method.split_array_mut
