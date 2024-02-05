@@ -52,6 +52,82 @@
 //! `i16`/`u16`, `i32`/`u32`, `i64`/`u64` and `i128`/`u128` respectively.
 //!
 //! The compile times increase exponentially, 3s, 7s, 30s, 3m and 46m respectively.
+pub trait StdConversionTarget{
+    type Target;
+}
+trait StdConversion:StdConversionTarget{
+    fn to_std(&self) -> Self::Target;
+    fn from_std(from: &Self::Target) -> Option<Self> where Self: Sized;
+}
+macro_rules! delegate_impls {
+    ($ty:ty) => {
+impl core::cmp::PartialOrd<Self> for $ty {
+    fn partial_cmp(&self, other: &Self) -> Option<core::cmp::Ordering> {
+        self.to_std_const().partial_cmp(&other.to_std_const())
+    }
+    fn lt(&self, other: &Self) -> bool {
+        self.to_std_const().lt(&other.to_std_const())
+    }
+    fn le(&self, other: &Self) -> bool {
+        self.to_std_const().le(&other.to_std_const())
+    }
+    fn gt(&self, other: &Self) -> bool {
+        self.to_std_const().gt(&other.to_std_const())
+    }
+    fn ge(&self, other: &Self) -> bool {
+        self.to_std_const().ge(&other.to_std_const())
+    }
+}
+impl core::cmp::Ord for $ty {
+    fn cmp(&self, other: &Self) -> core::cmp::Ordering {
+                self.to_std_const().cmp(&other.to_std_const())
+    }
+}
+impl core::fmt::Debug for $ty {
+    fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
+        core::fmt::Debug::fmt(&self.to_std_const(), f)
+    }
+}
+impl core::fmt::Display for $ty {
+    fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
+        core::fmt::Display::fmt(&self.to_std_const(), f)
+    }
+}
+impl core::fmt::Binary for $ty {
+    fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
+        core::fmt::Binary::fmt(&self.to_std_const(), f)
+    }
+}
+impl core::fmt::LowerHex for $ty {
+    fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
+        core::fmt::LowerHex::fmt(&self.to_std_const(), f)
+    }
+}
+impl core::fmt::UpperHex for $ty {
+    fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
+        core::fmt::UpperHex::fmt(&self.to_std_const(), f)
+    }
+}
+impl core::fmt::Octal for $ty {
+    fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
+        core::fmt::Octal::fmt(&self.to_std_const(), f)
+    }
+}
+impl crate::StdConversion for $ty {
+    fn to_std(&self) -> Self::Target{
+        self.to_std_const()
+    }
+    fn from_std(from: &Self::Target) -> Option<Self> {
+        Self::from_std_const(from)
+    }
+}
+impl core::convert::From<$ty> for <$ty as $crate::StdConversionTarget>::Target {
+    fn from(value: $ty) -> Self{
+        value.to_std_const()
+    }
+}
+    };
+}
 
 ux3_macros::define_enum!(1, 2, 3, 4, 5, 6, 7);
 // ux3_macros::define_enum!(12);

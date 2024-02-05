@@ -1,8 +1,11 @@
-# uX2: A better [uX](https://github.com/rust-ux/uX)
+# uX3: A better [uX](https://github.com/rust-ux/uX)/[ux2](https://github.com/JonathanWoollett-Light/ux2)
 
-[![Crates.io](https://img.shields.io/crates/v/ux2)](https://crates.io/crates/ux2)
-[![docs](https://img.shields.io/crates/v/ux2?color=yellow&label=docs)](https://docs.rs/ux2)
-[![codecov](https://codecov.io/gh/JonathanWoollett-Light/ux2/branch/master/graph/badge.svg?token=II1xtnbCDX)](https://codecov.io/gh/JonathanWoollett-Light/ux2)
+[![Crates.io](https://img.shields.io/crates/v/ux3)](https://crates.io/crates/ux4)
+[![docs](https://img.shields.io/crates/v/ux3?color=yellow&label=docs)](https://docs.rs/ux3)
+
+Please note that this readme is inherited from ux2, and may be largely incorrect.
+My main point for creating ux3 is, because ux2 is cumbersome to use at times and that their types can theoretically hold more memory than is required.
+ux3's types only use as much space as nessesary (a ux only (theoretically) uses x bits of storage. e.g. `Option<u7>` should only occupy 1 byte). This is achieved by utilizing enums for u1 to u7 and i1 to i7. 
 
 #### Non-standard integer types like `u7`, `u9`, `u10`, `u63`, `i7`, `i9` etc.
 
@@ -26,53 +29,6 @@ uX2 types take up as much space as the smallest integer type that can contain th
 The `8`, `16`, `32`, `64` and `128` features enable support up to the types of `i8`/`u8`, `i16`/`u16`, `i32`/`u32`, `i64`/`u64` and `i128`/`u128` respectively.
 
 The compile times increase exponentially, 3s, 7s, 30s, 3m and 46m respectively.
-
-<details>
-  <summary>Click here for me details</summary>
-
-    ```bash
-    jonathan@jonathan-System-Product-Name:~/Projects/ux2/ux2$ cargo clean
-    jonathan@jonathan-System-Product-Name:~/Projects/ux2/ux2$ cargo build --no-default-features --features 8
-    Compiling proc-macro2 v1.0.56
-    Compiling unicode-ident v1.0.8
-    Compiling quote v1.0.26
-    Compiling ux2-macros v0.7.0 (/home/jonathan/Projects/ux2/ux2-macros)
-    Compiling ux2 v0.7.0 (/home/jonathan/Projects/ux2/ux2)
-        Finished dev [unoptimized + debuginfo] target(s) in 3.00s
-    jonathan@jonathan-System-Product-Name:~/Projects/ux2/ux2$ cargo clean
-    jonathan@jonathan-System-Product-Name:~/Projects/ux2/ux2$ cargo build --no-default-features --features 16
-    Compiling proc-macro2 v1.0.56
-    Compiling quote v1.0.26
-    Compiling unicode-ident v1.0.8
-    Compiling ux2-macros v0.7.0 (/home/jonathan/Projects/ux2/ux2-macros)
-    Compiling ux2 v0.7.0 (/home/jonathan/Projects/ux2/ux2)
-        Finished dev [unoptimized + debuginfo] target(s) in 7.36s
-    jonathan@jonathan-System-Product-Name:~/Projects/ux2/ux2$ cargo clean
-    jonathan@jonathan-System-Product-Name:~/Projects/ux2/ux2$ cargo build --no-default-features --features 32
-    Compiling proc-macro2 v1.0.56
-    Compiling unicode-ident v1.0.8
-    Compiling quote v1.0.26
-    Compiling ux2-macros v0.7.0 (/home/jonathan/Projects/ux2/ux2-macros)
-    Compiling ux2 v0.7.0 (/home/jonathan/Projects/ux2/ux2)
-        Finished dev [unoptimized + debuginfo] target(s) in 29.96s
-    jonathan@jonathan-System-Product-Name:~/Projects/ux2/ux2$ cargo clean
-    jonathan@jonathan-System-Product-Name:~/Projects/ux2/ux2$ cargo build --no-default-features --features 64
-    Compiling proc-macro2 v1.0.56
-    Compiling unicode-ident v1.0.8
-    Compiling quote v1.0.26
-    Compiling ux2-macros v0.7.0 (/home/jonathan/Projects/ux2/ux2-macros)
-    Compiling ux2 v0.7.0 (/home/jonathan/Projects/ux2/ux2)
-        Finished dev [unoptimized + debuginfo] target(s) in 3m 26s
-    jonathan@jonathan-System-Product-Name:~/Projects/ux2/ux2$ cargo clean
-    jonathan@jonathan-System-Product-Name:~/Projects/ux2/ux2$ cargo build --no-default-features --features 128
-    Compiling proc-macro2 v1.0.56
-    Compiling unicode-ident v1.0.8
-    Compiling quote v1.0.26
-    Compiling ux2-macros v0.7.0 (/home/jonathan/Projects/ux2/ux2-macros)
-    Compiling ux2 v0.7.0 (/home/jonathan/Projects/ux2/ux2)
-        Finished dev [unoptimized + debuginfo] target(s) in 46m 22s
-    ```
-</details>
 
 ## Why does this exist? Why use this over `ux`?
 
