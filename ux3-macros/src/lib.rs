@@ -38,33 +38,12 @@ fn variants_to_definitions<'a>(variants: impl Iterator<Item=&'a(proc_macro2::Ide
         .unwrap()
 }
 
-fn match_from_std_statments<'a>(variants: impl Iterator<Item=&'a(proc_macro2::Ident, (bool, u128))>) -> TokenStream {
+fn match_from_std_statments<'a>(variants: impl Iterator<Item=&'a(proc_macro2::Ident, (bool, u128))> + 'a) -> impl Iterator<Item = TokenStream> + 'a {
     variants.map(|(variant, (negative, number))| {
-        // let ident = format!("Self::{variant}");
         let negative = if *negative { "-" } else {""};
-        // let number = format!("{negative}{number}");
         let statement = format!("{negative}{number} => Some(Self::{variant}),");
         statement.parse::<TokenStream>().unwrap()
     })
-    .reduce(|v1, v2| {
-        quote!(
-            #v1
-            #v2
-        )
-    }).unwrap()
-}
-fn match_to_std_statments<'a>(variants: impl Iterator<Item=&'a(proc_macro2::Ident, (bool, u128))>) -> TokenStream {
-    variants.map(|(variant, (negative, number))| {
-        let negative = if *negative { "-" } else {""};
-        let statement = format!("Self::{variant} => {negative}{number},");
-        statement.parse::<TokenStream>().unwrap()
-    })
-    .reduce(|v1, v2| {
-        quote!(
-            #v1
-            #v2
-        )
-    }).unwrap()
 }
 
 fn generate_enum(item: u32, intotype:u32, sized: bool) -> TokenStream {
@@ -103,8 +82,7 @@ fn generate_enum(item: u32, intotype:u32, sized: bool) -> TokenStream {
     let default:TokenStream = format!("{}{}", if default.1 {"-"} else {""}, default.0).parse().unwrap();
 
 
-    let definitions = variants_to_definitions(variants.iter());
-    let match_to_std = match_to_std_statments(variants.iter());
+    let definitions = variants.iter().map(|(x, _)|x);
     let match_from_std = match_from_std_statments(variants.iter());
     let item = item.to_string().parse::<TokenStream>().unwrap();
     let min_doctest = format!(" assert_eq!(<ux3::{enum_name}>::MIN, <ux3::{enum_name}>::from_std( {min} ).unwrap());");
@@ -124,7 +102,7 @@ assert_eq!(Some( <ux3::{enum_name}>::MAX ), <ux3::{enum_name}>::from_std( {max} 
 #[derive(Copy, Clone, PartialEq, Eq, Hash)]
 #[cfg_attr(feature="serde", derive(serde::Serialize, serde::Deserialize))]
 pub enum #enum_name {
-    #definitions
+    #( #definitions , )*
 }
 impl core::default::Default for #enum_name_path_self{
     fn default()->Self{
@@ -229,9 +207,7 @@ impl #enum_name_path_self {
     #[doc = #to_std_doctest]
     /// ```
     pub const fn to_std(&self) -> #intotype_name {
-        match self {
-            #match_to_std
-        }
+        (*self) as #intotype_name + #min
     }
     /// Converts this integer type into the next best fitting
     /// normal rust integer type.
@@ -239,8 +215,8 @@ impl #enum_name_path_self {
     #[doc = #from_std_doctest]
     /// ```
     pub const fn from_std(value: #intotype_name) -> Option<Self> {
-        match value{
-            #match_from_std
+        match value {
+            #( #match_from_std )*
             _ => None,
         }
     }
@@ -263,14 +239,13 @@ mod #test_enum_name {
         }
     }
     assert!(<#enum_name_path_super>::MIN <= <#enum_name_path_super>::DEFAULT);
-    assert!(<#enum_name_path_super>::MAX > <#enum_name_path_super>::DEFAULT);
+    assert!(<#enum_name_path_super>::MAX >= <#enum_name_path_super>::DEFAULT);
   }
   #[test]
   fn test_eq(){
     use super::*;
     assert_eq!(<#enum_name_path_super>::MIN, <#enum_name_path_super>::MIN);
     assert_eq!(<#enum_name_path_super>::DEFAULT, <#enum_name_path_super>::DEFAULT);
-    assert_ne!(<#enum_name_path_super>::MAX, <#enum_name_path_super>::DEFAULT);
     assert_eq!(<#enum_name_path_super>::MAX, <#enum_name_path_super>::MAX);
   }
   #[test]

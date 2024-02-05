@@ -53,7 +53,7 @@
 //!
 //! The compile times increase exponentially, 3s, 7s, 30s, 3m and 46m respectively.
 
-ux3_macros::define_enum!(2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12);
+ux3_macros::define_enum!(1, 2, 3, 4, 5, 6, 7);
 // ux3_macros::define_enum!(12);
 
 /// A mimic of [`std::num::TryFromIntError`] that can be constructed on stable.
