@@ -21,7 +21,7 @@ emath_0_25 = ["dep:emath_0_25"]
 nostd = []
 
 [dependencies]
-serde = { version = "1.0.196", features = ["derive"], optional = true }
+serde = { version = "1.0.197", features = ["derive"], optional = true }
 ux3-macros =  { path = "../ux3-macros", version = "0.0.1" }
 emath_0_25 = {package = "emath", version = "0.25", optional = true}
 
